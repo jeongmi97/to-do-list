@@ -33,9 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
     var prefs = await SharedPreferences.getInstance();
     final comments = prefs.getStringList('comments');
     final completeCmts = prefs.getStringList('completeCmts');
-
+    // prefs.clear();
     // 할 일 리스트 세팅
-    if (comments!.isNotEmpty) {
+    if (comments != null && comments.isNotEmpty) {
       setState(() {
         isComment = true;
         commentList = comments;
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // 완료 리스트 세팅
-    if (completeCmts!.isNotEmpty) {
+    if (completeCmts != null && completeCmts.isNotEmpty) {
       setState(() {
         isComplete = true;
         completeList = completeCmts;
@@ -105,7 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
         commentList = comments;
         completeList = completeCmts;
         completeModelList.add(TodoListModel.fromJson(map));
-        commentModelList.remove(TodoListModel.fromJson(map));
+        commentModelList.clear();
+        for (var todo in commentList) {
+          Map<String, dynamic> jsonData = jsonDecode(todo);
+          commentModelList.add(TodoListModel.fromJson(jsonData));
+        }
       });
     }
 
@@ -119,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final completeCmts = prefs.getStringList('completeCmts');
 
     Map<String, dynamic> map = {};
-    map['comments'] = comment;
+    map['comment'] = comment;
     map['date'] = date;
     String jsonData = jsonEncode(map);
 
@@ -136,7 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       commentList = comments;
       completeList = completeCmts;
-      completeList.remove(TodoListModel.fromJson(map));
+      completeModelList.clear();
+      for (var todo in completeList) {
+        Map<String, dynamic> jsonData = jsonDecode(todo);
+        completeModelList.add(TodoListModel.fromJson(jsonData));
+      }
       commentModelList.add(TodoListModel.fromJson(map));
     });
   }
@@ -161,7 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
           isComment = false;
         }
         commentList = comments;
-        commentModelList.remove(TodoListModel.fromJson(map));
+        commentModelList.clear();
+        for (var todo in commentList) {
+          Map<String, dynamic> jsonData = jsonDecode(todo);
+          commentModelList.add(TodoListModel.fromJson(jsonData));
+        }
       });
     } else {
       // 완료 항목 삭제
@@ -175,7 +187,11 @@ class _HomeScreenState extends State<HomeScreen> {
           print('complete is empty');
         }
         completeList = completeCmts;
-        completeModelList.remove(TodoListModel.fromJson(map));
+        completeModelList.clear();
+        for (var todo in completeList) {
+          Map<String, dynamic> jsonData = jsonDecode(todo);
+          completeModelList.add(TodoListModel.fromJson(jsonData));
+        }
       });
     }
   }
