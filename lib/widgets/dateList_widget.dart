@@ -13,12 +13,12 @@ class _DatelistWidgetState extends State<DatelistWidget> {
     return ListView.builder(
       itemCount: 15,
       itemBuilder: (context, index) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
             color: Theme.of(context).focusColor,
             borderRadius: BorderRadius.circular(15)),
         child: const Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(10.0),
           child: Column(
             children: [
               Text(

@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final completeCmts = prefs.getStringList('completeCmts');
 
     // 할 일 리스트 세팅
-    if (comments != null) {
+    if (comments!.isNotEmpty) {
       setState(() {
         isComment = true;
         commentList = comments;
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // 완료 리스트 세팅
-    if (completeCmts != null) {
+    if (completeCmts!.isNotEmpty) {
       setState(() {
         isComplete = true;
         completeList = completeCmts;
@@ -172,9 +172,10 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         if (completeCmts.isEmpty) {
           isComplete = false;
+          print('complete is empty');
         }
         completeList = completeCmts;
-        commentModelList.remove(TodoListModel.fromJson(map));
+        completeModelList.remove(TodoListModel.fromJson(map));
       });
     }
   }
