@@ -29,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<TodoListModel> commentModelList = [];
   List<TodoListModel> completeModelList = [];
 
+  int weekIdx = -1;
+
   Future initPrefs() async {
     var prefs = await SharedPreferences.getInstance();
     final comments = prefs.getStringList('comments');
@@ -68,6 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // 메모리 초기 설정
     initPrefs();
+  }
+
+  prevWeekIdx() {
+    setState(() {
+      weekIdx = weekIdx + 7;
+    });
+  }
+
+  nextWeekIdx() {
+    setState(() {
+      weekIdx = weekIdx - 7;
+    });
   }
 
   // 리스트 추가/완료 처리
@@ -215,80 +229,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: size.height * 0.15,
                       decoration: const BoxDecoration(),
                       alignment: Alignment.center,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Row(
-                          // children: [
-                          //   // Text(
-                          //   //   'aaaaa',
-                          //   //   style: TextStyle(color: Colors.black),
-                          //   // ),
-                          //   createDateList(),
-                          // ],
                           children: [
-                            Expanded(
-                              child: DatelistWidget(),
+                            IconButton(
+                              onPressed: () {
+                                prevWeekIdx();
+                              },
+                              icon: const Icon(Icons.chevron_left_rounded),
                             ),
-                            // const DatelistWidget(),
-                            // Container(
-                            //   margin:
-                            //       const EdgeInsets.symmetric(horizontal: 10),
-                            //   decoration: BoxDecoration(
-                            //       color: Theme.of(context).focusColor,
-                            //       borderRadius: BorderRadius.circular(15)),
-                            //   child: const Padding(
-                            //     padding: EdgeInsets.all(8.0),
-                            //     child: Column(
-                            //       children: [
-                            //         Text(
-                            //           '19',
-                            //           style: TextStyle(
-                            //               color: Colors.white,
-                            //               fontWeight: FontWeight.w900,
-                            //               fontSize: 18),
-                            //         ),
-                            //         Text('Month'),
-                            //         Text('Fri')
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            // Container(
-                            //   decoration: BoxDecoration(
-                            //       color: Colors.white,
-                            //       borderRadius: BorderRadius.circular(15)),
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.all(8.0),
-                            //     child: Column(
-                            //       children: [
-                            //         Text(
-                            //           '20',
-                            //           style: TextStyle(
-                            //               color: Theme.of(context)
-                            //                   .textTheme
-                            //                   .bodyLarge!
-                            //                   .color,
-                            //               fontWeight: FontWeight.w900,
-                            //               fontSize: 18),
-                            //         ),
-                            //         Text('Month',
-                            //             style: TextStyle(
-                            //               color: Theme.of(context)
-                            //                   .textTheme
-                            //                   .bodySmall!
-                            //                   .color,
-                            //             )),
-                            //         Text('Fri',
-                            //             style: TextStyle(
-                            //               color: Theme.of(context)
-                            //                   .textTheme
-                            //                   .bodySmall!
-                            //                   .color,
-                            //             )),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
+                            Expanded(
+                              child: DatelistWidget(
+                                weekIdx: weekIdx,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                nextWeekIdx();
+                              },
+                              icon: const Icon(
+                                  Icons.keyboard_arrow_right_rounded),
+                            ),
                           ],
                         ),
                       ),
